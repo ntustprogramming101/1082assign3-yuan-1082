@@ -35,17 +35,17 @@ float cameraOffsetY = 0;
 boolean debugMode = false;
 
 void setup() {
-  size(640, 480, P2D);
-  // Enter your setup code here (please put loadImage() here or your game will lag like crazy)
-  bg = loadImage("img/bg.jpg");
-  title = loadImage("img/title.jpg");
+	size(640, 480, P2D);
+	// Enter your setup code here (please put loadImage() here or your game will lag like crazy)
+	bg = loadImage("img/bg.jpg");
+	title = loadImage("img/title.jpg");
   life = loadImage("img/life.png");
-  gameover = loadImage("img/gameover.jpg");
-  startNormal = loadImage("img/startNormal.png");
-  startHovered = loadImage("img/startHovered.png");
-  restartNormal = loadImage("img/restartNormal.png");
-  restartHovered = loadImage("img/restartHovered.png");
-  soil8x24 = loadImage("img/soil8x24.png");
+	gameover = loadImage("img/gameover.jpg");
+	startNormal = loadImage("img/startNormal.png");
+	startHovered = loadImage("img/startHovered.png");
+	restartNormal = loadImage("img/restartNormal.png");
+	restartHovered = loadImage("img/restartHovered.png");
+	soil8x24 = loadImage("img/soil8x24.png");
   soil0 = loadImage("img/soil0.png");
   soil1 = loadImage("img/soil1.png");
   soil2 = loadImage("img/soil2.png");

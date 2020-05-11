@@ -8,7 +8,8 @@ final int START_BUTTON_Y = 360;
 final int LIFE_W = 50;
 final int LIFE_GAP = 20;
 final int BLOCK = 80;
-
+float lastTime = millis();
+boolean left=false,right=false,down=false;
 int gameState = 0;
 int hogState = 3;
 
@@ -114,7 +115,8 @@ void draw() {
         slideY -= BLOCK/15;
       }
     }
-    translate(0, slideY);  // each "new draw" needs "new tanslate"
+    translate(0, slideY);  // each "new draw" needs "new tanslate" 
+    
 
     // Grass
     fill(124, 204, 25);
@@ -175,7 +177,7 @@ void draw() {
           if (j%4 == 1 || j%4 ==2) {
             image(stone1, BLOCK*i, BLOCK*j);
           } else if (j%4 == 0 || j%4 == 3) {
-            image(stone1, BLOCK*i-BLOCK*2, BLOCK*j);
+            image(stone1, BLOCK*(i-2), BLOCK*j);
           }
         }
       }
@@ -190,9 +192,9 @@ void draw() {
           if (j%3 == 0) {
             image(stone1, BLOCK*i, BLOCK*j);
           } else if (j%3 == 1) {
-            image(stone1, BLOCK*i-BLOCK, BLOCK*j);
+            image(stone1, BLOCK*(i-1), BLOCK*j);
           } else {
-            image(stone1, BLOCK*i-BLOCK*2, BLOCK*j);
+            image(stone1, BLOCK*(i-2), BLOCK*j);
           }
         }
         //stone2
@@ -201,9 +203,9 @@ void draw() {
           if (j%3 ==0) {
             image(stone2, BLOCK*i, BLOCK*j);
           } else if (j%3 ==1) {
-            image(stone2, BLOCK*i-BLOCK, BLOCK*j);
+            image(stone2, BLOCK*(i-1), BLOCK*j);
           } else {
-            image(stone2, BLOCK*i-BLOCK*2, BLOCK*j);
+            image(stone2, BLOCK*(i-2), BLOCK*j);
           }
         }
       }
@@ -219,25 +221,26 @@ void draw() {
     // Player
     switch ( hogState ) {
     case HOG_STAND:      
-      if (downPressed) {
+      if (down) {
         if (slideY > slide) {
           image(groundhogDown, groundhogX, groundhogY);
         } else {
-          downPressed = false;
+          down = false;
         }
-      } else if (leftPressed) {      
+        
+      } else if (left) {      
         if (moveX > groundhogX) {
           image( groundhogLeft, moveX, groundhogY);
           moveX -= floor(BLOCK/15);
         } else {
-          leftPressed = false;
+          left = false;
         }
-      } else if (rightPressed) {
+      } else if (right) {
         if (moveX < groundhogX) {
           image( groundhogRight, moveX, groundhogY);
           moveX += floor(BLOCK/15);
         } else {
-          rightPressed = false;
+          right = false;
         }
       } else {
         image(groundhogIdle, groundhogX, groundhogY);
@@ -247,28 +250,28 @@ void draw() {
 
 
     case HOG_RUN:
-      if (downPressed) {       
+      if (down) {       
         if (groundhogY < height) {
           if (moveY < groundhogY) {
             image( groundhogDown, groundhogX, moveY);
             moveY += floor(80/15);
           } else {            
-            downPressed = false;
+            down = false;
           }
         }
-      } else if (leftPressed) {      
+      } else if (left) {      
         if (moveX > groundhogX) {
           image( groundhogLeft, moveX, groundhogY);
           moveX -= floor(BLOCK/15);
         } else {
-          leftPressed = false;
+          left = false;
         }
-      } else if (rightPressed) {
+      } else if (right) {
         if (moveX < groundhogX) {
           image( groundhogRight, moveX, groundhogY);
           moveX += floor(BLOCK/15);
         } else {
-          rightPressed = false;
+          right = false;
         }
       } else {
         image(groundhogIdle, groundhogX, groundhogY);
@@ -321,14 +324,18 @@ void draw() {
 
 void keyPressed() {
   // Add your moving input code here
-  if (key == CODED) {
+  float newTime = millis();
+  if(newTime-lastTime>250){
+    if (key == CODED) {
     switch(keyCode) {
     case DOWN:
       downPressed = true;                 
       camera = true;
       moveY = groundhogY;
-      slideY = slide;        
-      if (slide > BLOCK*(-20)) { // boundary            
+      slideY = slide;  
+      if(newTime-lastTime>250){
+        down=true;
+        if (slide > BLOCK*(-20)) { // boundary            
         slide -= BLOCK;
         hogState = HOG_STAND;
       } else {
@@ -337,26 +344,39 @@ void keyPressed() {
           groundhogY += BLOCK;
         }
       }
+      lastTime=newTime;
+      }
+      
 
       break;
 
     case LEFT:
       moveX = groundhogX;
+      if(newTime-lastTime>250){
+        left=true;
       if (moveX > 0) { // boundary
         leftPressed = true;
         groundhogX -= BLOCK;
+      }
+      lastTime=newTime;
       }
       break;
 
     case RIGHT:
       moveX = groundhogX;
+      if(newTime-lastTime>250){
+        right=true;
       if (moveX < width-BLOCK) { // boundary
         rightPressed = true;
         groundhogX += BLOCK;
       }
+      lastTime=newTime;
+      }
       break;
     }
   }
+  }
+  
 
 
 

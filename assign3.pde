@@ -115,7 +115,7 @@ void draw() {
         slideY -= BLOCK/15;
       }
     }
-    translate(0, slideY+);  // each "new draw" needs "new tanslate" 
+    translate(0, slideY+5);  // each "new draw" needs "new tanslate" 
     
 
     // Grass
